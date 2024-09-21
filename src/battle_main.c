@@ -39,6 +39,7 @@
 #include "roamer.h"
 #include "safari_zone.h"
 #include "scanline_effect.h"
+#include "script_pokemon_util.h"
 #include "sound.h"
 #include "sprite.h"
 #include "string_util.h"
@@ -120,6 +121,7 @@ static void HandleEndTurn_MonFled(void);
 static void HandleEndTurn_FinishBattle(void);
 static void SpriteCB_UnusedBattleInit(struct Sprite *sprite);
 static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite);
+static void CopyOpponentParty(void);
 
 EWRAM_DATA u16 gBattle_BG0_X = 0;
 EWRAM_DATA u16 gBattle_BG0_Y = 0;
@@ -4929,6 +4931,11 @@ static void RunTurnActionsFunctions(void)
 
 static void HandleEndTurn_BattleWon(void)
 {
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    {
+        CopyOpponentParty();
+    }
+
     gCurrentActionFuncId = 0;
 
     if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
@@ -5182,6 +5189,22 @@ static void WaitForEvoSceneToFinish(void)
 {
     if (gMain.callback2 == BattleMainCB2)
         gBattleMainFunc = TryEvolvePokemon;
+}
+
+static void CopyOpponentParty(void)
+{
+    int i = 0;
+
+    ZeroPlayerPartyMons();
+    CalculateEnemyPartyCount();
+
+    for (i = 0; i < gEnemyPartyCount; i++)
+    {
+        CopyMon(&gPlayerParty[i], &gEnemyParty[i], sizeof(gEnemyParty[i]));
+    }
+
+    CalculatePlayerPartyCount();
+    HealPlayerParty();
 }
 
 static void ReturnFromBattleToOverworld(void)
