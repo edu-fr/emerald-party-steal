@@ -1,0 +1,24 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "save.h": "c",
+            "map_name_popup.h": "c",
+            "sound.h": "c",
+            "algorithm": "c",
+            "chrono": "c",
+            "functional": "c",
+            "optional": "c",
+            "system_error": "c",
+            "type_traits": "c",
+            "xlocmon": "c",
+            "xtr1common": "c",
+            "xutility": "c",
+            "pokemon.h": "c"
+        }
+    }
+}

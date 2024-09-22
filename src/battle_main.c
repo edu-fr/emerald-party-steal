@@ -121,7 +121,6 @@ static void HandleEndTurn_MonFled(void);
 static void HandleEndTurn_FinishBattle(void);
 static void SpriteCB_UnusedBattleInit(struct Sprite *sprite);
 static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite);
-static void CopyOpponentParty(void);
 
 EWRAM_DATA u16 gBattle_BG0_X = 0;
 EWRAM_DATA u16 gBattle_BG0_Y = 0;
@@ -5189,22 +5188,6 @@ static void WaitForEvoSceneToFinish(void)
 {
     if (gMain.callback2 == BattleMainCB2)
         gBattleMainFunc = TryEvolvePokemon;
-}
-
-static void CopyOpponentParty(void)
-{
-    int i = 0;
-
-    ZeroPlayerPartyMons();
-    CalculateEnemyPartyCount();
-
-    for (i = 0; i < gEnemyPartyCount; i++)
-    {
-        CopyMon(&gPlayerParty[i], &gEnemyParty[i], sizeof(gEnemyParty[i]));
-    }
-
-    CalculatePlayerPartyCount();
-    HealPlayerParty();
 }
 
 static void ReturnFromBattleToOverworld(void)

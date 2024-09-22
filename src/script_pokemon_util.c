@@ -226,3 +226,21 @@ void ReducePlayerPartyToSelectedMons(void)
 
     CalculatePlayerPartyCount();
 }
+
+void CopyOpponentParty(void)
+{
+    int i = 0;
+    struct Pokemon* enemyMon;
+
+    ZeroPlayerPartyMons();
+    CalculateEnemyPartyCount();
+
+    for (i = 0; i < gEnemyPartyCount; i++)
+    {
+        enemyMon = &gEnemyParty[i];
+        CopyMon(&gPlayerParty[i], enemyMon, sizeof(*enemyMon));
+    }
+
+    CalculatePlayerPartyCount();
+    HealPlayerParty();
+}
